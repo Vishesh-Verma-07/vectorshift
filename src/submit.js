@@ -27,14 +27,8 @@ export const SubmitButton = () => {
   }, [nodes, edges]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <button type="button" onClick={handleSubmit}>
+    <div className="submit-shell">
+      <button className="submit-shell__button" type="button" onClick={handleSubmit}>
         Submit
       </button>
     </div>

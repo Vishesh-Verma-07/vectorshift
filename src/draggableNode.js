@@ -18,26 +18,13 @@ export const DraggableNode = ({
 
   return (
     <motion.div
-      className={type}
+      className={`draggable-node draggable-node--${type}`}
       onDragStart={(event) => onDragStart(event, type)}
       onDragEnd={(event) => (event.target.style.cursor = "grab")}
       whileHover={{ y: -4, scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       style={{
-        cursor: "grab",
-        minWidth: "120px",
-        minHeight: "72px",
-        padding: "12px 14px",
-        display: "flex",
-        gap: "4px",
-        alignItems: "center",
-        borderRadius: "12px",
-        background: `linear-gradient(180deg, ${accent} 0%, #111827 100%)`,
-        boxShadow: "0 18px 30px rgba(15, 23, 42, 0.18)",
-        justifyContent: "center",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
+        "--node-accent": accent,
       }}
       draggable
     >
@@ -54,16 +41,8 @@ export const DraggableNode = ({
           pointerEvents: "none",
         }}
       />
-      <span style={{ color: "#fff", fontWeight: 700 }}>{label}</span>
-      <span
-        style={{
-          color: "rgba(255,255,255,0.76)",
-          fontSize: "12px",
-          textAlign: "center",
-        }}
-      >
-        {description}
-      </span>
+      <span className="draggable-node__label">{label}</span>
+      <span className="draggable-node__description">{description}</span>
     </motion.div>
   );
 };

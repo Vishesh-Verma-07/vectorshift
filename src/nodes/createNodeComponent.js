@@ -107,8 +107,9 @@ const getDynamicHandleLayout = (dynamicHandles = []) => {
 };
 
 export const createNodeComponent = (nodeType) => {
-  const ConfiguredNode = ({ id, data }) => {
+  const ConfiguredNode = ({ id, data, selected }) => {
     const definition = getNodeDefinition(nodeType);
+    const isLocked = Boolean(data?.locked);
     const [values, setValues] = useState(() =>
       getInitialValues(definition, id, data),
     );
@@ -160,9 +161,40 @@ export const createNodeComponent = (nodeType) => {
           ...baseNodeStyle,
           width: nodeWidth,
           minHeight: nodeMinHeight,
+          border: baseNodeStyle.border,
           borderTop: `4px solid ${definition.accent}`,
+          outline: selected ? `3px solid ${definition.accent}` : "none",
+          outlineOffset: 4,
+          boxShadow: selected
+            ? `0 0 0 6px ${definition.accent}24, 0 26px 60px rgba(15, 23, 42, 0.22)`
+            : baseNodeStyle.boxShadow,
         }}
       >
+        {selected && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              position: "absolute",
+              right: 12,
+              top: 10,
+              zIndex: 2,
+              width: 20,
+              height: 20,
+              borderRadius: "999px",
+              background: definition.accent,
+              color: "#fff",
+              display: "grid",
+              placeItems: "center",
+              fontSize: 13,
+              fontWeight: 900,
+              boxShadow: "0 6px 14px rgba(15, 23, 42, 0.22)",
+            }}
+          >
+            ✓
+          </motion.div>
+        )}
+
         <motion.div
           aria-hidden="true"
           initial={{ opacity: 0, scale: 0.85 }}
@@ -224,7 +256,7 @@ export const createNodeComponent = (nodeType) => {
                 padding: "6px 10px",
               }}
             >
-              {definition.title}
+              {isLocked ? "Locked" : definition.title}
             </span>
           </motion.div>
 
