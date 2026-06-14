@@ -3,7 +3,7 @@
 // --------------------------------------------------
 
 import { useCallback, useRef, useState } from "react";
-import ReactFlow, { Background, Controls, MiniMap } from "reactflow";
+import ReactFlow, { Background, MiniMap } from "reactflow";
 import { shallow } from "zustand/shallow";
 import { InputNode } from "./nodes/inputNode";
 import { LLMNode } from "./nodes/llmNode";
@@ -43,7 +43,7 @@ const selector = (state) => ({
   onConnect: state.onConnect,
 });
 
-export const PipelineUI = () => {
+export const PipelineUI = ({ onCanvasReady }) => {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const {
@@ -97,8 +97,8 @@ export const PipelineUI = () => {
   }, []);
 
   return (
-    <>
-      <div ref={reactFlowWrapper} style={{ width: "100wv", height: "70vh" }}>
+    <div className="canvas-shell" ref={reactFlowWrapper}>
+      <div className="canvas-shell__stage">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -107,17 +107,19 @@ export const PipelineUI = () => {
           onConnect={onConnect}
           onDrop={onDrop}
           onDragOver={onDragOver}
-          onInit={setReactFlowInstance}
+          onInit={(instance) => {
+            setReactFlowInstance(instance);
+            onCanvasReady?.(instance);
+          }}
           nodeTypes={nodeTypes}
           proOptions={proOptions}
           snapGrid={[gridSize, gridSize]}
           connectionLineType="smoothstep"
         >
           <Background color="#aaa" gap={gridSize} />
-          <Controls />
           <MiniMap />
         </ReactFlow>
       </div>
-    </>
+    </div>
   );
 };

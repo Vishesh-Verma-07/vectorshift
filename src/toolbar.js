@@ -10,15 +10,15 @@ export const PipelineToolbar = () => {
   }));
 
   return (
-    <div style={{ padding: "10px" }}>
-      <div
-        style={{
-          marginTop: "20px",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "10px",
-        }}
-      >
+    <div className="toolbar-shell">
+      <div className="toolbar-shell__header">
+        <div>
+          <div className="toolbar-shell__eyebrow">Node Library</div>
+        </div>
+        <div className="toolbar-shell__hint">Drag a node into the canvas</div>
+      </div>
+
+      <div className="toolbar-shell__list">
         {toolbarNodes.map((node) => (
           <DraggableNode
             key={node.type}
